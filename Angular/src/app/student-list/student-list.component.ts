@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../student.service';
 import { Product } from '../product';
+import { Bids } from '../bids';
 import { Observable,Subject } from "rxjs";
 
 import {FormControl,FormGroup,Validators} from '@angular/forms';
@@ -15,33 +16,26 @@ export class StudentListComponent implements OnInit {
 
  constructor(private productservice:StudentService) { }
 
-  studentsArray: any[] = [];
-  dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any>= new Subject();
 
-
   students: Observable<Product[]>;
-  student : Product=new Product();
+  bids: Observable<Bids[]>;
+  selectedLevel;
   deleteMessage=false;
   studentlist:any;
-  isupdated = false;    
+  isupdated = true;
  
-  productIdList: any = ['03d8c30e-753c-43c3-9349-db9eae8279fc'];
+  productIdList: any = [];
 
   ngOnInit() {
-    this.isupdated=false;
-    this.dtOptions = {
-      pageLength: 6,
-      stateSave:true,
-      lengthMenu:[[6, 16, 20, -1], [6, 16, 20, "All"]],
-      processing: true
-    };
-
+    this.isupdated=true;
     this.populateProductIds();
 
     this.productservice.showBids('03d8c30e-753c-43c3-9349-db9eae8279fc').subscribe(data =>{
-    this.students =data;
+    this.students = data;
     console.log(this.students);
+    this.bids = data.userBidsList;
+    console.log(this.bids);
     this.dtTrigger.next();
     })
 
@@ -53,13 +47,6 @@ export class StudentListComponent implements OnInit {
 
   get f(){
     return this.form.controls;
-  }
-
-  submit(){
-    console.log(this.form.value);
-  }
-  changeWebsite(e) {
-    console.log("changeWebsite");
   }
 
   fetchProductIds() {
@@ -79,14 +66,15 @@ export class StudentListComponent implements OnInit {
     })
   }
 
-  showBids(e) {
-    console.log("showBids");
-    this.productservice.showBids('03d8c30e-753c-43c3-9349-db9eae8279fc').subscribe(data =>{
+  showBids() {
+    console.log("StudentListComponent >> showBids >>");
+    this.productservice.showBids(this.selectedLevel).subscribe(data =>{
     this.students = data;
-    console.log(data.userBidsList);
+    this.bids = data.userBidsList;
+    console.log("selected product id is : " + this.selectedLevel);
+    //alert(this.selectedLevel);
     this.dtTrigger.next();
     })
   }
-
 
 }

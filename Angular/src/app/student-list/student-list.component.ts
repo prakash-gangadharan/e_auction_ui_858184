@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../student.service';
-import { Student } from '../student';
+import { Product } from '../product';
 import { Observable,Subject } from "rxjs";
 
 import {FormControl,FormGroup,Validators} from '@angular/forms';
@@ -13,22 +13,20 @@ import {FormControl,FormGroup,Validators} from '@angular/forms';
 })
 export class StudentListComponent implements OnInit {
 
- constructor(private studentservice:StudentService) { }
+ constructor(private productservice:StudentService) { }
 
   studentsArray: any[] = [];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any>= new Subject();
 
 
-  students: Observable<Student[]>;
-  student : Student=new Student();
+  students: Observable<Product[]>;
+  student : Product=new Product();
   deleteMessage=false;
   studentlist:any;
   isupdated = false;    
  
-  websiteList: any = ['03d8c30e-753c-43c3-9349-db9eae8279fc',
-  '355be3bf-2154-489a-bdd0-0ecb80e8d4e3',
-  '2ee00d11-c3b8-4539-bedf-ee2335b1f902'];
+  productIdList: any = ['03d8c30e-753c-43c3-9349-db9eae8279fc'];
 
   ngOnInit() {
     this.isupdated=false;
@@ -38,25 +36,16 @@ export class StudentListComponent implements OnInit {
       lengthMenu:[[6, 16, 20, -1], [6, 16, 20, "All"]],
       processing: true
     };
-     let someArray = [];
-    this.studentservice.getProductList().subscribe(data =>{
-    console.log("getProductList");
-    for (var _i = 0; _i < data.length; _i++) {
-             someArray.push(data[_i].productId);
-         }
-    this.websiteList = someArray;
-    console.log(this.websiteList);
-    this.dtTrigger.next();
-    })
 
-    this.studentservice.getProductDetails().subscribe(data =>{
+    this.populateProductIds();
+
+    this.productservice.showBids('03d8c30e-753c-43c3-9349-db9eae8279fc').subscribe(data =>{
     this.students =data;
     console.log(this.students);
     this.dtTrigger.next();
     })
 
   }
-
 
   form = new FormGroup({
     website: new FormControl('', Validators.required)
@@ -73,16 +62,31 @@ export class StudentListComponent implements OnInit {
     console.log("changeWebsite");
   }
 
-  showBids(e) {
-    console.log("showBids");
-    this.studentservice.showBids('03d8c30e-753c-43c3-9349-db9eae8279fc').subscribe(data =>{
-    this.students =data;
-    console.log(this.students);
+  fetchProductIds() {
+    this.populateProductIds();
+  }
+
+  populateProductIds(){
+    let someArray = [];
+    this.productservice.getProductList().subscribe(data =>{
+    console.log("StudentListComponent >> getProductList");
+    for (var _i = 0; _i < data.length; _i++) {
+             someArray.push(data[_i].productId);
+         }
+    this.productIdList = someArray;
+    console.log(this.productIdList);
     this.dtTrigger.next();
     })
   }
 
-
+  showBids(e) {
+    console.log("showBids");
+    this.productservice.showBids('03d8c30e-753c-43c3-9349-db9eae8279fc').subscribe(data =>{
+    this.students = data;
+    console.log(data.userBidsList);
+    this.dtTrigger.next();
+    })
+  }
 
 
 }

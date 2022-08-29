@@ -3,7 +3,7 @@
   <div class="container">
 <br><br>
     <button class="btn btn-primary" type="button"
-            (click)="changeWebsite($event)">Fetch Details</button>
+            (click)="fetchProductIds()">Fetch Details</button>
     <form [formGroup]="form" (ngSubmit)="showBids($event)">
       <br><h3>Product</h3>
       <div class="form-group">
@@ -11,7 +11,7 @@
         <select formControlName="website" class="form-control" (change)="changeWebsite($event)">
           <option disabled>Select Product Id</option>
           <option>Choose Product Id</option>
-          <option *ngFor="let web of websiteList">{{web}}</option>
+          <option *ngFor="let web of productIdList">{{web}}</option>
         </select>
         <div *ngIf="f.website.touched && f.website.invalid" class="alert alert-danger">
           <div *ngIf="f.website.errors.required">Product Id is required.</div>

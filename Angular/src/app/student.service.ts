@@ -18,12 +18,8 @@ export class StudentService {
     return this.http.get(`${this.getProductListUrl}`+'');
   }
 
-  getProductDetails(): Observable<any> {
-    return this.http.get(`${this.getProduct}`+'/show-bids/03d8c30e-753c-43c3-9349-db9eae8279fc');
-  }
-
   showBids(id: string): Observable<any> {
-  console.log("showBids id: " + id);
+    console.log("showBids id: " + id);
     return this.http.get(`${this.getProduct}/show-bids/${id}`);
   }
 

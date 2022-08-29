@@ -1,4 +1,4 @@
-export class Student {
+export class Product {
 
     student_id:number;
     student_name:String;

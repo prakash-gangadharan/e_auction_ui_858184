@@ -1,7 +1,7 @@
 export class Product {
 
-    student_id:number;
-    student_name:String;
-    student_email:String;
-    student_branch=String;
+    product_id:number;
+    product_name:String;
+    product_shortDescription:String;
+    product_detailedDescription=String;
 }

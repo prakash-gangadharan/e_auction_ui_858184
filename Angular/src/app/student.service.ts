@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
 
 export class StudentService {
 
-  private baseUrl = 'http://localhost:8083/e-auction/api/v1';
-  private getProduct = 'http://localhost:8083/e-auction/api/v1/seller';
-  private getProductListUrl = 'http://localhost:8083/e-auction/api/v1/seller/products'
+  private baseUrl = 'http://eauction858184-env.eba-myn9v3q4.us-east-2.elasticbeanstalk.com/e-auction/api/v1';
+  private getProduct = 'http://eauction858184-env.eba-myn9v3q4.us-east-2.elasticbeanstalk.com/e-auction/api/v1/seller';
+  private getProductListUrl = 'http://eauction858184-env.eba-myn9v3q4.us-east-2.elasticbeanstalk.com/e-auction/api/v1/seller/products'
 
   constructor(private http:HttpClient) { }
 
